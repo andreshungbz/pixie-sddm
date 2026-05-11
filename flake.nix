@@ -29,6 +29,7 @@
             textColor ? null,
             fontFamily ? null,
             fontSize ? null,
+            userLabelMode ? null,
             ...
           }@args:
           let
@@ -46,6 +47,7 @@
                 textColor
                 fontFamily
                 fontSize
+                userLabelMode
                 ;
             };
 

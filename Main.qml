@@ -497,10 +497,16 @@ Rectangle {
                                 var edit = userModel.data(modelIdx, Qt.EditRole);
                                 var nr = userModel.data(modelIdx, Qt.UserRole + 1);
                                 var realName = userModel.data(modelIdx, Qt.UserRole + 2);
+                                var caret = (userModel.count > 1 ? " ▾" : "");
+                                if (config.userLabelMode === "username") {
+                                    var u = edit ? edit.toString() : (nr ? nr.toString() : (display ? display.toString() : "User"));
+                                    return u + caret;
+                                }
                                 var finalName = display ? display.toString() : (realName ? realName.toString() : (nr ? nr.toString() : (edit ? edit.toString() : "User")));
-                                return cleanName(finalName) + (userModel.count > 1 ? " ▾" : "");
+                                return cleanName(finalName) + caret;
                             }
-                            return cleanName(sddm.lastUser ? sddm.lastUser : "User");
+                            var last = sddm.lastUser ? sddm.lastUser : "User";
+                            return (config.userLabelMode === "username") ? last : cleanName(last);
                         }
                         color: "white"
                         font.pixelSize: 24
@@ -733,6 +739,9 @@ Rectangle {
                             var n_r = userModel.data(mIdx, Qt.UserRole + 1);
                             var r = userModel.data(mIdx, Qt.UserRole + 2);
                             var e = userModel.data(mIdx, Qt.EditRole);
+                            if (config.userLabelMode === "username") {
+                                return e ? e.toString() : (n_r ? n_r.toString() : (d ? d.toString() : "User"));
+                            }
                             return cleanName(d ? d : (r ? r : (n_r ? n_r : e)));
                         }
                         color: isCurrent ? "white" : (hovered ? "#DDDDDD" : "#AAAAAA")

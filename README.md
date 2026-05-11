@@ -137,6 +137,7 @@ The most modern and flexible way to install.
       textColor = "#E2E2E6";            # Hex color code
       fontFamily = "JetBrains Mono";    # Font family name
       fontSize = 13;                    # Font size in px
+      userLabelMode = "username";       # "displayName" (default) or "username"
     })
   ];
 }
