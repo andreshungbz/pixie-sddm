@@ -3,6 +3,7 @@
  * Author: xCaptaiN09
  */
 import QtQuick
+import QtQuick.Controls
 
 Row {
     id: powerBarRoot
@@ -10,8 +11,57 @@ Row {
     height: 30
 
     property color textColor: "white"
+    property string fontFamily: ""
+
+    property color baseColor: config.backgroundColor
+    property color surfaceColor: Qt.lighter(baseColor, 1.3)
+    property color surfaceVariantColor: Qt.lighter(baseColor, 1.6)
 
     FontLoader { id: iconFont; source: "../assets/fonts/MaterialDesignIcons.ttf" }
+
+    component PowerButton: Text {
+        id: btn
+        property string tooltip: ""
+        signal clicked()
+
+        color: powerBarRoot.textColor
+        font.pixelSize: 20
+        font.family: iconFont.name
+        anchors.verticalCenter: parent.verticalCenter
+        scale: clickArea.containsMouse ? 1.5 : 1.0
+        Behavior on scale { NumberAnimation { duration: 100; easing.type: Easing.OutQuad } }
+
+        MouseArea {
+            id: clickArea
+            anchors.fill: parent
+            hoverEnabled: true
+            cursorShape: Qt.PointingHandCursor
+            onClicked: btn.clicked()
+        }
+
+        ToolTip {
+            id: tip
+            visible: clickArea.containsMouse && btn.tooltip.length > 0
+            text: btn.tooltip
+            delay: 500
+            padding: 10
+
+            background: Rectangle {
+                color: powerBarRoot.surfaceColor
+                radius: 10
+                border.width: 1
+                border.color: powerBarRoot.surfaceVariantColor
+            }
+
+            contentItem: Text {
+                text: tip.text
+                color: config.textColor
+                font.family: powerBarRoot.fontFamily
+                font.pixelSize: 13
+                font.weight: Font.Medium
+            }
+        }
+    }
 
     // Battery (With forced live updates)
     Row {
@@ -67,42 +117,24 @@ Row {
         }
     }
 
-    // Suspend
-    Text {
+    PowerButton {
+        visible: config.showSuspend === "true"
         text: "󰤄"
-        color: textColor
-        font.pixelSize: 20
-        font.family: iconFont.name
-        anchors.verticalCenter: parent.verticalCenter
-        MouseArea {
-            anchors.fill: parent
-            onClicked: sddm.suspend()
-        }
+        tooltip: "Suspend"
+        onClicked: sddm.suspend()
     }
 
-    // Restart
-    Text {
+    PowerButton {
+        visible: config.showRestart === "true"
         text: "󰑐"
-        color: textColor
-        font.pixelSize: 20
-        font.family: iconFont.name
-        anchors.verticalCenter: parent.verticalCenter
-        MouseArea {
-            anchors.fill: parent
-            onClicked: sddm.reboot()
-        }
+        tooltip: "Restart"
+        onClicked: sddm.reboot()
     }
 
-    // Shutdown
-    Text {
+    PowerButton {
+        visible: config.showShutdown === "true"
         text: "󰐥"
-        color: textColor
-        font.pixelSize: 20
-        font.family: iconFont.name
-        anchors.verticalCenter: parent.verticalCenter
-        MouseArea {
-            anchors.fill: parent
-            onClicked: sddm.powerOff()
-        }
+        tooltip: "Shutdown"
+        onClicked: sddm.powerOff()
     }
 }
