@@ -392,10 +392,12 @@ Rectangle {
         Rectangle {
             id: loginCard
             width: 380
-            // Dynamic height: Expands smoothly when NumLock text appears
-            height: 480 + (numLockIndicator.visible ? 40 : 0)
+            // Height = column content + 80 (40 top + 40 bottom anchors.margins),
+            // so the card always has equal top/bottom padding regardless of
+            // which optional rows (session pill, num-lock) are visible.
+            height: contentColumn.implicitHeight + 80
             x: (parent.width - width) / 2
-            y: (parent.height - 480) / 2
+            y: (parent.height - height) / 2
             color: loginState.isError ? "#442222" : baseColor
             opacity: 0.7
             radius: 32
@@ -407,6 +409,7 @@ Rectangle {
             Behavior on y { NumberAnimation { duration: 300; easing.type: Easing.OutBack } }
 
             ColumnLayout {
+                id: contentColumn
                 anchors.fill: parent
                 anchors.margins: 40
                 spacing: 15
@@ -498,7 +501,6 @@ Rectangle {
                     Layout.alignment: Qt.AlignHCenter
                     Layout.preferredWidth: userNameLabel.width + 40
                     Layout.preferredHeight: userNameLabel.height + 20
-                    Layout.topMargin: 10
 
                     Rectangle {
                         anchors.fill: parent
@@ -596,7 +598,6 @@ Rectangle {
 
                 TextField {
                     id: passwordField
-                    Layout.topMargin: 30 // Keeps space above it static
                     echoMode: TextInput.Password
                     Layout.fillWidth: true
                     horizontalAlignment: Text.AlignHCenter
@@ -646,6 +647,7 @@ Rectangle {
                     Layout.alignment: Qt.AlignHCenter
                     Layout.preferredWidth: 64
                     Layout.preferredHeight: 64
+                    Layout.topMargin: 10
                     focusPolicy: Qt.NoFocus
                     enabled: !container.isLoggingIn
 
@@ -668,7 +670,6 @@ Rectangle {
                     }
                 }
 
-                Item { Layout.fillHeight: true } // ADD THIS LINE HERE AT THE BOTTOM
             }
         }
     }
