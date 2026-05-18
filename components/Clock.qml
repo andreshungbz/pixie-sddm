@@ -15,6 +15,7 @@ Item {
     property color smartHoursColor: defaultHoursColor
     property color smartMinutesColor: defaultMinutesColor
     property string timeStr: ""
+    property int activeSpacing: (config.fontSpacing && config.fontSpacing.length > 0) ? parseInt(config.fontSpacing) : -130
 
     function updateTime() {
         var date = new Date();
@@ -65,7 +66,7 @@ Item {
         spacing: 0
 
         Column {
-            spacing: -130
+            spacing: clock.activeSpacing
             Text {
                 text: clock.timeStr.charAt(0)
                 color: clock.smartHoursColor
@@ -89,7 +90,7 @@ Item {
         }
 
         Column {
-            spacing: -130
+            spacing: clock.activeSpacing
             Text {
                 text: clock.timeStr.charAt(1)
                 color: clock.smartHoursColor

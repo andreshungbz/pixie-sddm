@@ -27,6 +27,7 @@
             backgroundColor ? null,
             textColor ? null,
             fontFamily ? null,
+            fontSpacing ? null,
             ...
           }@args:
           let
@@ -42,6 +43,7 @@
                 backgroundColor
                 textColor
                 fontFamily
+                fontSpacing
                 ;
             };
 
