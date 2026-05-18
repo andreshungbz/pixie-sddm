@@ -331,6 +331,7 @@ Rectangle {
             text: "Press any key to unlock"
             color: config.textColor
             font.pixelSize: 16
+            fontFamily: container.activeFontRegular
             anchors {
                 bottom: parent.bottom
                 horizontalCenter: parent.horizontalCenter
